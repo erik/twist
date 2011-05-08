@@ -1,0 +1,6 @@
+*.class
+*~
+*.jar
+twist
+*.o
+MapEditor/build/*
