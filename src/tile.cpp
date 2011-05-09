@@ -29,3 +29,7 @@ void Tile::Draw(Game& g) {
   g.Draw(m_sprite);
 }
 
+void Tile::Draw(sf::RenderTarget& g) {
+  g.Draw(m_sprite);
+}
+

@@ -26,6 +26,7 @@ public:
   virtual ~Tile();
   
   void Draw(Game& game);
+  void Draw(sf::RenderTarget& g);
   
 private:
   int m_x, m_y;

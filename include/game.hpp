@@ -16,13 +16,16 @@ public:
   void Run();
   
 private:
+  void CheckInput(float delta);
+
+  Map m_map;
+  sf::Image& m_background;
+  sf::RenderWindow m_win;
+  sf::RenderImage m_image;
+  
   double m_scalex;
   double m_scaley; 
-  Map m_map;
-  sf::RenderWindow m_win;
-  sf::Sprite m_background;
-  sf::RenderImage m_image;
-  int m_rotation; 
+  float m_rotation;
 };
 
 #endif /* _GAME_DISP_H_ */
