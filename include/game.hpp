@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "map.hpp"
+#include "player.hpp"
 
 class Game {
 public:
@@ -16,7 +17,11 @@ public:
   void Run();
   
 private:
-  void CheckInput(float delta);
+  void Update();
+  void CheckInput();
+  void DrawMap();
+  void DrawBackground();
+  void Display();
 
   Map m_map;
   sf::Image& m_background;
@@ -25,7 +30,13 @@ private:
   
   double m_scalex;
   double m_scaley; 
-  float m_rotation;
+  double m_rotation;
+
+  bool m_running;
+  float m_frameTime;
+
+  sf::Clock m_clock;
+  Player m_player;
 };
 
 #endif /* _GAME_DISP_H_ */

@@ -16,9 +16,20 @@ public:
 
   void Draw(Game& game);
   void SetTile(int x, int y, Tile& t);
+
+  Tile& GetTile(int x, int y);
+
+  int GetWidth() { return m_width; }
+  int GetHeight() { return m_height; }
+
+  sf::Vector2f GetSpawn();
+  sf::Vector2f GetGoal();
+
   std::string Name();
   
 private:
+  sf::Vector2f GetType(TileType t);
+
   int m_width;
   int m_height;
   std::string m_name;

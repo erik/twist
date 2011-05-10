@@ -25,6 +25,30 @@ void Map::SetTile(int x, int y, Tile& t) {
   }
 }
 
+Tile& Map::GetTile(int x, int y) {
+  return m_map[x * m_height + y];
+}
+
+sf::Vector2f Map::GetType(TileType t) {
+  for(int x = 0; x < m_width; ++x) {
+    for(int y = 0; y < m_height; ++y) {
+      Tile& tile = m_map[x * m_height + y];
+      if(tile.GetType() == t) {
+        return sf::Vector2f(x, y);
+      }
+    }
+  }
+  return sf::Vector2f(-1, -1);
+}
+
+sf::Vector2f Map::GetSpawn() {
+  return this->GetType(SPAWN);
+}
+
+sf::Vector2f Map::GetGoal() {
+  return this->GetType(GOAL);
+}
+
 void Map::Draw(Game& game) {
   for(int i = 0; i < m_width * m_height; ++i) {
     m_map[i].Draw(game);

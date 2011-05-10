@@ -51,7 +51,7 @@ public class MapCanvas extends JPanel implements MouseMotionListener, MouseListe
         this.currentTile = Tile.BLOCK;
 
         tileset = Toolkit.getDefaultToolkit().getImage(
-                this.getClass().getResource("../tiles.png"));
+                this.getClass().getResource("tiles.png"));
     }
 
     public void setTile(int x, int y, Tile t) {

@@ -2,88 +2,108 @@
 
 #include "resourcemanager.hpp"
 #include "maploader.hpp"
+#include <sstream>
 
 Game::Game(int width, int height) :
   m_map(MapLoader::LoadMap("resources/maps/test.map")),
   m_background(ResourceManager::GetImage("resources/images/background.png")),
-  m_rotation(0.0)
+  m_rotation(0.0),
+  m_running(false),
+  m_frameTime(1),
+  m_player(m_map)
 {
 
-  int flags = sf::Style::Resize | sf::Style::Close;
+  int flags = sf::Style::Close;
   
   m_win.Create(sf::VideoMode(15*64, 15*64, 32), "twist", flags,
-    sf::ContextSettings::ContextSettings(24, 8, 8));
+               sf::ContextSettings::ContextSettings(24, 8, 8));
 
   m_image.Create(64 * 15, 64 * 15);
     
   m_win.EnableVerticalSync(true);
-  m_win.SetFramerateLimit(60);
+  m_win.SetFramerateLimit(120);
 }
 
 Game::~Game() {
 }
 
 void Game::Run() {
-  bool running(true);
+  m_running = true;
   
-  float frameTime = 0;
-  sf::Clock clock;
+  while(m_running && m_win.IsOpened()) {
 
-  while(running && m_win.IsOpened()) {
-    frameTime = clock.GetElapsedTime();
-    clock.Reset();
-    
-    sf::Event Event;
-    while (m_win.PollEvent(Event)) {
-      if(Event.Type == sf::Event::Closed) {
-        running = false;
-      } 
-      if(Event.Type == sf::Event::KeyPressed &&
-        Event.Key.Code == sf::Key::Escape) {
-          running = false;          
-      }           
-    }
-    
-    this->CheckInput(frameTime);
-    
-    m_win.Clear();
-    
-    sf::Sprite back(m_background);
-    
-    back.Resize(22 * 64, 22 * 64);
-    
-    back.SetOrigin(m_background.GetWidth() / 2, m_background.GetHeight() / 2);
-    back.SetPosition((15 * 64) / 2, (15 * 64) / 2);
-        
-    back.Rotate(static_cast<int>(m_rotation));
-    m_win.Draw(back);
-    
-    m_map.Draw(*this);
-    
-    sf::Sprite sprite(m_image.GetImage());
-    sprite.SetOrigin(64 * 15 / 2, 64 * 15 / 2);
-    sprite.SetPosition(64 * 15 / 2, 64 * 15 / 2);
-    sprite.Rotate(static_cast<int>(m_rotation));
-    
-    m_win.Draw(sprite);
-    
-    m_image.Display();
-    m_win.Display();
+    this->Update();
+    this->CheckInput();
+
+    this->DrawBackground();
+    this->DrawMap();
+
+    this->Display();
   }
+  m_win.Close();
 }
 
 void Game::Draw(sf::Drawable& r) {
   m_image.Draw(r);
 }
 
-void Game::CheckInput(float dt) {
+void Game::Update() {
+  m_frameTime = m_clock.GetElapsedTime();
+  m_clock.Reset();
+  
+  m_player.SetRotation(m_rotation);
+  m_player.Update(m_frameTime);
+}
+
+void Game::CheckInput() {
   const sf::Input& input = m_win.GetInput();
-  
-  if(input.IsKeyDown(sf::Key::Left)) {
-    m_rotation = m_rotation - 40 * dt;
-  } 
-  if(input.IsKeyDown(sf::Key::Right)) {
-    m_rotation = m_rotation + 40 * dt;
+   
+  sf::Event Event;
+  while (m_win.PollEvent(Event)) {
+    if(Event.Type == sf::Event::Closed) {
+      m_running = false;
+    } 
+    if(Event.Type == sf::Event::KeyPressed &&
+       Event.Key.Code == sf::Key::Escape) {
+      m_running = false;          
+    }           
   }
+
+  if(input.IsKeyDown(sf::Key::A)) {
+    m_rotation = m_rotation - 40 * m_frameTime;
+  } 
+  if(input.IsKeyDown(sf::Key::D)) {
+    m_rotation = m_rotation + 40 * m_frameTime;
+  }  
+}
+
+void Game::DrawBackground() {
+  m_win.Clear();
+  sf::Sprite back(m_background);    
+  back.Resize(22 * 64, 22 * 64);
+  m_win.Draw(back);
+}
+
+void Game::DrawMap() {
+  m_image.Clear();
   
+  std::stringstream ss;
+  ss << "FPS: " << (1 / m_frameTime);
+  sf::Text fps(ss.str().c_str(), sf::Font::GetDefaultFont(), 10.f);
+  
+  m_image.Display();
+  m_map.Draw(*this);
+  m_player.Draw(m_image);
+
+  sf::Sprite sprite(m_image.GetImage());
+  sprite.SetOrigin(64 * 15 / 2, 64 * 15 / 2);
+  sprite.SetPosition(64 * 15 / 2, 64 * 15 / 2);
+  sprite.Rotate(static_cast<int>(m_rotation));
+  
+  m_win.Draw(sprite);
+  m_win.Draw(fps);
+}
+
+void Game::Display() {
+  m_win.Display();
 }

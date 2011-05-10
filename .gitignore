@@ -4,3 +4,4 @@
 twist
 *.o
 MapEditor/build/*
+MapEditor/dist/

@@ -27,6 +27,10 @@ public:
   
   void Draw(Game& game);
   void Draw(sf::RenderTarget& g);
+
+  TileType GetType() { return m_type; }
+  int GetX() { return m_sprite.GetPosition().x; }
+  int GetY() { return m_sprite.GetPosition().y; }
   
 private:
   int m_x, m_y;
