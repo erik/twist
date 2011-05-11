@@ -70,10 +70,10 @@ void Game::CheckInput() {
   }
 
   if(input.IsKeyDown(sf::Key::A)) {
-    m_rotation = m_rotation - 40 * m_frameTime;
+    m_rotation = m_rotation - 60 * m_frameTime;
   } 
   if(input.IsKeyDown(sf::Key::D)) {
-    m_rotation = m_rotation + 40 * m_frameTime;
+    m_rotation = m_rotation + 60 * m_frameTime;
   }  
 }
 
