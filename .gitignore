@@ -1,7 +1,8 @@
 *.class
 *~
 *.jar
-twist
 *.o
 MapEditor/build/*
 MapEditor/dist/
+Box2D/
+twist-bin

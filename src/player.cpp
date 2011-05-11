@@ -70,6 +70,8 @@ void Player::SetRotation(float rot) {
   double acc_x = -GRAVITY * cos((m_rotation + 90)*M_PI/180);
 
   m_world.SetGravity(b2Vec2(acc_x, acc_y));
+  
+  m_rotation = rot;
 }
 
 void Player::Update(float dt) {
