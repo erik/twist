@@ -10,7 +10,8 @@ Game::Game(int width, int height) :
   m_rotation(0.0),
   m_running(false),
   m_frameTime(1),
-  m_player(m_map)
+  m_world(m_map.CreateWorld()),
+  m_player(m_map, m_world)
 {
 
   int flags = sf::Style::Close;
@@ -51,7 +52,9 @@ void Game::Update() {
   m_frameTime = m_clock.GetElapsedTime();
   m_clock.Reset();
   
-  m_player.SetRotation(m_rotation);
+  m_world.SetRotation(m_rotation);
+  m_world.Update(m_frameTime);
+
   m_player.Update(m_frameTime);
 }
 

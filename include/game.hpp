@@ -7,6 +7,7 @@
 
 #include "map.hpp"
 #include "player.hpp"
+#include "world.hpp"
 
 class Game {
 public:
@@ -27,15 +28,13 @@ private:
   sf::Image& m_background;
   sf::RenderWindow m_win;
   sf::RenderImage m_image;
-  
   double m_scalex;
   double m_scaley; 
   double m_rotation;
-
   bool m_running;
   float m_frameTime;
-
   sf::Clock m_clock;
+  World m_world;
   Player m_player;
 };
 

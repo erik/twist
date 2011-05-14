@@ -41,6 +41,32 @@ sf::Vector2f Map::GetType(TileType t) {
   return sf::Vector2f(-1, -1);
 }
 
+World Map::CreateWorld() {
+  World world;
+  
+  for(int x = 0; x < this->GetWidth(); ++x) {
+    for(int y = 0; y < this->GetHeight(); ++y) {
+      Tile& t = this->GetTile(x, y);
+      if(t.GetType() != BLOCK) {
+        continue;
+      }
+      
+      float posx = (t.GetX() + TILE_WIDTH / 2.0);
+      float posy = (t.GetY() + TILE_HEIGHT / 2.0);
+      
+      Entity::Box(TILE_WIDTH, TILE_HEIGHT)
+        .SetDynamic(false)
+        .SetPosition(posx, posy)
+        .SetDensity(0)
+        .SetFriction(.3)
+        .Create(world);
+    }
+  }
+
+  return world;
+
+}
+
 sf::Vector2f Map::GetSpawn() {
   return this->GetType(SPAWN);
 }

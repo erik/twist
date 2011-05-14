@@ -12,11 +12,8 @@
 
 class Player {
 public:
-  Player(Map& map);
+  Player(Map& map, World& w);
   virtual ~Player();
-
-  void SetRotation(float rot);
-  void SetPosition(int m_x, int m_y);
 
   void Update(float dt);
 
@@ -28,7 +25,7 @@ private:
 
   sf::Image& m_image;
 
-  World m_world;
+  World& m_world;
   Entity m_entity;
 
   float m_update;

@@ -7,6 +7,7 @@
 
 #include "tiles.hpp"
 
+class World;
 class Game;
 
 class Map {
@@ -18,6 +19,9 @@ public:
   void SetTile(int x, int y, Tile& t);
 
   Tile& GetTile(int x, int y);
+
+  /* create a physics world for the map */
+  World CreateWorld();
 
   int GetWidth() { return m_width; }
   int GetHeight() { return m_height; }
