@@ -7,43 +7,8 @@
 #include "Box2D/Box2D.h"
 
 #include "map.hpp"
-
-const float WORLD_SCALE = 30;
-const float GRAVITY = 10;
-const float PHYS_STEP = 1.0 / 100;
-
-class Player;
-
-struct Entity {
-  enum Type { TILE, PLAYER };
-
-  Type type;
-
-  union data {
-    Tile *t;
-    Player* p;
-  } data;
-};
-
-
-struct ContactListener : public b2ContactListener {
-  ContactListener();
-  virtual ~ContactListener();
-
-  void BeginContact(b2Contact* contact) {
-    Entity *t1 = (Entity*)contact->GetFixtureA()->GetBody()->GetUserData();
-    Entity *t2 = (Entity*)contact->GetFixtureB()->GetBody()->GetUserData();
-
-    if(t1->type == t2->type) {
-      return;
-    } else {
-      /*
-        Player* p = ((t1->type == Entity::PLAYER) ? t1 : t2)->data.p;
-        Tile* t   = ((t2->type == Entity::TILE  ) ? t1 : t2)->data.t;
-      */
-    }
-  }
-};
+#include "entity.hpp"
+#include "world.hpp"
 
 class Player {
 public:
@@ -63,11 +28,10 @@ private:
 
   sf::Image& m_image;
 
-  b2World m_world;
-  b2Body* m_body;
-  float m_update;
+  World m_world;
+  Entity m_entity;
 
-  b2Body** m_bodies;
+  float m_update;
 };
 
 #endif /* _PLAYER_H_ */

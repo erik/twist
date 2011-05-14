@@ -25,6 +25,7 @@ Game::Game(int width, int height) :
 }
 
 Game::~Game() {
+  m_win.Close();
 }
 
 void Game::Run() {
@@ -40,7 +41,6 @@ void Game::Run() {
 
     this->Display();
   }
-  m_win.Close();
 }
 
 void Game::Draw(sf::Drawable& r) {
@@ -91,9 +91,10 @@ void Game::DrawMap() {
   ss << "FPS: " << (1 / m_frameTime);
   sf::Text fps(ss.str().c_str(), sf::Font::GetDefaultFont(), 10.f);
   
-  m_image.Display();
   m_map.Draw(*this);
   m_player.Draw(m_image);
+
+  m_image.Display();
 
   sf::Sprite sprite(m_image.GetImage());
   sprite.SetOrigin(64 * 15 / 2, 64 * 15 / 2);
